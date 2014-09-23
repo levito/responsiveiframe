@@ -1,15 +1,19 @@
-# jQuery-independent version of [github.com/npr/responsiveiframe](https://github.com/npr/responsiveiframe)
-
 ## Documentation
 
 [http://npr.github.com/responsiveiframe/](http://npr.github.com/responsiveiframe/)
 
 ### Changes compared to the original
 
-#### Initialisation in the parent
+* CommonJS module for Browserify/Webpack
+* No dependency on jQuery
+* Therefore different initialization than the original
+
+#### Initialization in the parent
 
 ```javascript
 var ir = responsiveIframe();
+// or with CommonJS/Browserify
+// var ir = require('responsiveiframe')();
 ir.init(document.querySelectorAll('iframe'), { xdomain: '*' });
 ```
 
