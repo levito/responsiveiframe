@@ -1,19 +1,34 @@
+# jQuery-independent version of [github.com/npr/responsiveiframe](https://github.com/npr/responsiveiframe)
+
 ## Documentation
 
 [http://npr.github.com/responsiveiframe/](http://npr.github.com/responsiveiframe/)
+
+### Changes compared to the original
+
+#### Initialisation in the parent
+
+```javascript
+var ir = responsiveIframe();
+ir.init(document.querySelectorAll('iframe'), { xdomain: '*' });
+```
+
+* Pass the elements as first parameter - single nodes or nodelists are allowed
+* The second parameter - the options - are the same as in the original, and may be omitted
+* Initialisation in the client is the same as in the original
 
 ## Credits
 
 Built and maintained [@NPR](http://github.com/npr/) by
 * [John Nelson](https://github.com/johnymonster),
 * [Mike Seid](https://github.com/mbseid),
-* [Jared Biehler] (https://github.com/jaredbiehler),
+* [Jared Biehler](https://github.com/jaredbiehler),
 * [Irakli Nadareishvili](https://github.com/inadarei) and
 * [Andy Winder](https://github.com/awinder)
 
-Based on the original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb). 
+Based on the original prototype by [Ioseb Dzmanashvili](https://github.com/ioseb).
 
-## License 
+## License
 
 The MIT License (MIT)
 

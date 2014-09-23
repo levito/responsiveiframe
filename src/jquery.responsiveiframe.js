@@ -1,63 +1,47 @@
-if (typeof jQuery !== 'undefined') {
-  (function( $ ){
-    var settings = {
+;(function(){
+  var module;
+
+  var ResponsiveIframe = function() {
+    this.options = {};
+  }
+
+  ResponsiveIframe.prototype.init = function(elems, opts) {
+    opts = opts || {};
+
+    var elemsArr;
+    var self = this;
+    var defaultOptions = {
       xdomain: '*',
       ie : navigator.userAgent.toLowerCase().indexOf('msie') > -1,
       scrollToTop: true
     };
 
-    var methods = {
-      // initialization for the parent, the one housing this
-      init: function() {
-        return this.each(function(self){
-          var $this = $(this);
-
-          if (window.postMessage) {
-            if (window.addEventListener) {
-              window.addEventListener('message', function(e) {
-                privateMethods.messageHandler($this,e);
-              } , false);
-            } else if (window.attachEvent) {
-              window.attachEvent('onmessage', function(e) {
-                privateMethods.messageHandler($this,e);
-              }, $this);
-            }
-          } else {
-            setInterval(function () {
-              var hash = window.location.hash, matches = hash.match(/^#h(\d+)(s?)$/);
-              if (matches) {
-                privateMethods.setHeight($this, matches[1]);
-                if (settings.scrollToTop && matches[2] === 's'){
-                  scroll(0,0);
-                }
-              }
-            }, 150);
-          }
-        });
+    for (var i in defaultOptions) {
+      if (defaultOptions.hasOwnProperty(i)) {
+        this.options[i] = typeof opts[i] !== 'undefined' ? opts[i] : defaultOptions[i];
       }
-    };
+    }
 
     var privateMethods = {
-      messageHandler: function (elem, e) {
+      messageHandler: function(elem, e) {
         var height,
           r,
           matches,
           strD;
 
-        if (settings.xdomain !== '*') {
-          var regex = new RegExp(settings.xdomain + '$');
-          if(e.origin == "null"){
+        if (self.options.xdomain !== '*') {
+          var regex = new RegExp(self.options.xdomain + '$');
+          if (e.origin == "null") {
             throw new Error("messageHandler( elem, e): There is no origin.  You are viewing the page from your file system.  Please run through a web server.");
           }
-          if(e.origin.match(regex)){
+          if (e.origin.match(regex)) {
             matches = true;
-          }else{
+          } else {
             throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
           }
-        
         }
 
-        if(settings.xdomain === '*' || matches ) {
+        if(self.options.xdomain === '*' || matches ) {
           strD = e.data + "";
           r = strD.match(/^(\d+)(s?)$/);
           if(r && r.length === 3){
@@ -67,18 +51,18 @@ if (typeof jQuery !== 'undefined') {
                 privateMethods.setHeight(elem, height);
               } catch (ex) {}
             }
-            if (settings.scrollToTop && r[2] === "s"){
+            if (self.options.scrollToTop && r[2] === "s"){
               scroll(0,0);
             }
           }
         }
       },
 
-      // Sets the height of the iframe
-      setHeight : function (elem, height) {
-        elem.css('height', height + 'px');
+      setHeight: function(elem, height) {
+        elem.style.height = height + 'px';
       },
-      getDocHeight: function () {
+
+      getDocHeight: function() {
         var D = document;
         return Math.min(
           Math.max(D.body.scrollHeight, D.documentElement.scrollHeight),
@@ -88,41 +72,58 @@ if (typeof jQuery !== 'undefined') {
       }
     };
 
-    $.fn.responsiveIframe = function( method ) {
-      if ( methods[method] ) {
-        return methods[ method ].apply( this, Array.prototype.slice.call( arguments, 1 ));
-      } else if ( typeof method === 'object' || ! method ) {
-        $.extend(settings, arguments[0]);
-        return methods.init.apply( this );
-      } else {
-        $.error( 'Method ' +  method + ' does not exist on jQuery.responsiveIframe' );
-      }
-    };
-  }( jQuery ));
-}
+    if (elems.nodeName && elems.nodeName.toLowerCase() === 'iframe') {
+      elemsArr = [elems];
+    } else if (elems.length) {
+      elemsArr = Array.prototype.slice.call(elems);
+    } else {
+      console.log('Please pass a node or a nodelist to responsiveIframe.');
+      return;
+    }
 
-;(function(){
-  var self,
-      module,
-      ResponsiveIframe = function () {self = this;};
+    elemsArr.forEach(function(elem) {
+      if (window.postMessage) {
+        if (window.addEventListener) {
+          window.addEventListener('message', function(e) {
+            privateMethods.messageHandler(elem, e);
+          }, false);
+        } else if (window.attachEvent) {
+          window.attachEvent('onmessage', function(e) {
+            privateMethods.messageHandler(elem, e);
+          }, elem);
+        }
+      } else {
+        setInterval(function () {
+          var hash = window.location.hash, matches = hash.match(/^#h(\d+)(s?)$/);
+          if (matches) {
+            privateMethods.setHeight(elem, matches[1]);
+            if (self.options.scrollToTop && matches[2] === 's'){
+              scroll(0, 0);
+            }
+          }
+        }, 150);
+      }
+    });
+  }
 
   ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
     if (window.addEventListener) {
-      window.addEventListener("load", self.messageParent, false);
-      window.addEventListener("resize", self.messageParent, false);
+      window.addEventListener("load", this.messageParent, false);
+      window.addEventListener("resize", this.messageParent, false);
     } else if (window.attachEvent) {
-      window.attachEvent("onload", self.messageParent);
-      window.attachEvent("onresize", self.messageParent);
+      window.attachEvent("onload", this.messageParent);
+      window.attachEvent("onresize", this.messageParent);
     }
   };
 
   ResponsiveIframe.prototype.messageParent = function(scrollTop) {
     var h = document.body.offsetHeight;
-    h = (scrollTop)? h+'s':h;
-    if(parent.postMessage){
-      parent.postMessage( h , '*');
+
+    h = (scrollTop) ? h+'s' : h;
+    if (parent.postMessage) {
+      parent.postMessage(h ,'*');
     } else {
-      window.location.hash = 'h'+h;
+      window.location.hash = 'h' + h;
     }
   };
 
