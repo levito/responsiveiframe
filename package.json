@@ -1,6 +1,6 @@
 {
   "name": "responsiveiframe",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "jQuery-less responsive iframe script based on jQuery ResponsiveIframe by NPR.",
   "main": "index.js",
   "scripts": {

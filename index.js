@@ -1,6 +1,4 @@
 ;(function(){
-  var module;
-
   var ResponsiveIframe = function() {
     this.options = {};
   }
@@ -31,18 +29,18 @@
 
         if (self.options.xdomain !== '*') {
           var regex = new RegExp(self.options.xdomain + '$');
-          if (e.origin == "null") {
-            throw new Error("messageHandler( elem, e): There is no origin.  You are viewing the page from your file system.  Please run through a web server.");
+          if (!e.origin) {
+            throw new Error('messageHandler(elem, e): There is no origin. You are viewing the page from your file system. Please run through a web server.');
           }
           if (e.origin.match(regex)) {
             matches = true;
           } else {
-            throw new Error("messageHandler( elem, e): The orgin doesn't match the responsiveiframe  xdomain.");
+            throw new Error('messageHandler(elem, e): The orgin doesn\'t match the responsiveiframe xdomain.');
           }
         }
 
-        if(self.options.xdomain === '*' || matches ) {
-          strD = e.data + "";
+        if (self.options.xdomain === '*' || matches) {
+          strD = e.data + '';
           r = strD.match(/^(\d+)(s?)$/);
           if(r && r.length === 3){
             height = parseInt(r[1], 10);
@@ -51,7 +49,7 @@
                 privateMethods.setHeight(elem, height);
               } catch (ex) {}
             }
-            if (self.options.scrollToTop && r[2] === "s"){
+            if (self.options.scrollToTop && r[2] === 's'){
               scroll(0,0);
             }
           }
@@ -108,11 +106,11 @@
 
   ResponsiveIframe.prototype.allowResponsiveEmbedding = function() {
     if (window.addEventListener) {
-      window.addEventListener("load", this.messageParent, false);
-      window.addEventListener("resize", this.messageParent, false);
+      window.addEventListener('load', this.messageParent, false);
+      window.addEventListener('resize', this.messageParent, false);
     } else if (window.attachEvent) {
-      window.attachEvent("onload", this.messageParent);
-      window.attachEvent("onresize", this.messageParent);
+      window.attachEvent('onload', this.messageParent);
+      window.attachEvent('onresize', this.messageParent);
     }
   };
 
@@ -135,6 +133,6 @@
   if ('undefined' === typeof exports) {
     window.responsiveIframe = responsiveIframe;
   } else {
-    module.exports.responsiveIframe = responsiveIframe;
+    module.exports = responsiveIframe;
   }
 }());
