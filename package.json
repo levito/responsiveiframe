@@ -1,28 +1,16 @@
 {
-  "name": "jquery.responsiveiframe",
-  "title": "jQuery ResponsiveIframe",
-  "description": "jQuery ResponsiveIframe by NPR.",
-  "version": "0.0.3",
-  "homepage": "https://github.com/npr/responsiveiframe",
-  "author": {
-    "name": "Irakli Nadareishvili",
-    "email": "irakli@npr.org",
-    "url":"http://www.freshblurbs.com"
+  "name": "responsiveiframe",
+  "version": "0.0.0",
+  "description": "jQuery-less responsive iframe script based on jQuery ResponsiveIframe by NPR.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "contributors" : [
-    {"name" : "Ioseb Dzmanashvili", "url" : "https://github.com/ioseb"},
-    {"name" : "Andew Winder", "url" : "https://github.com/awinder"},
-    {"name" : "John Nelson", "url" : "https://github.com/johnymonster"},
-    {"name" : "Michael Seid", "url" : "https://github.com/mbseid"},
-    {"name" : "Adam McElwee", "url" : "https://github.com/acmcelwee"}
-  ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/npr/responsiveiframe.git"
+    "url": "https://github.com/levito/responsiveiframe.git"
   },
-  "bugs": {
-    "url": "https://github.com/npr/responsiveiframe/issues"
-  },
+  "author": "Irakli Nadareishvili, Veit Lehmann",
   "licenses": [
     {
       "type": "MIT",
@@ -33,16 +21,8 @@
       "url": "https://github.com/npr/responsiveiframe/blob/master/LICENSE-GPL"
     }
   ],
-  "dependencies": {
-    "grunt": "~0.4.0",
-    "grunt-contrib-qunit": "",
-    "grunt-jslint": ""
+  "bugs": {
+    "url": "https://github.com/levito/responsiveiframe/issues"
   },
-  "keywords": [],
-  "devDependencies": {
-    "grunt-contrib-clean": "~0.5.0",
-    "grunt-contrib-uglify": "~0.2.2",
-    "grunt-contrib-concat": "~0.3.0",
-    "grunt": "~0.4.1"
-  }
+  "homepage": "https://github.com/levito/responsiveiframe"
 }
